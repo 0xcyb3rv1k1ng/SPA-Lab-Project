@@ -36,7 +36,35 @@ app.post("/add", function (req, res) {
 // GET Directory of employees, returns an array of objects from the server.
 app.get("/directory", function (req, res) {
 	// Modify this route and the views
-	res.render("pages/directory");
+	//var axios = require('axios');
+
+	res.render("pages/directory",{
+		employees: employees,
+	});
+
+var config = {
+  method: 'get',
+  url: 'https://spalab-874f2-default-rtdb.firebaseio.com/.json',
+  headers: { }
+};
+
+axios(config)
+.then(function (response) {
+  console.log(response.data);
+  responseArray = Object.entries(response.data.data)
+  return responseArray;
+})
+.then((employees) => {
+	res.render("pages/directory", {
+		mykeyvalue: employees
+	});
+})
+.catch(function (error) {
+  console.log(error);
+});
+	// res.render("pages/directory", {
+	// 	employees: responseArray
+	// });
 });
 
 // GET static about page
